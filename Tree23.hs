@@ -1,4 +1,9 @@
-module Tree23 where
+module Tree23 (
+  Tree(..),
+  insert,
+  contains,
+  mkTree
+) where
 
 import qualified Data.List
 
@@ -34,11 +39,10 @@ reduce t           = t
 
 -- should not be called with two 1-leaves, or a tri-node and any leaf
 reduce2 :: (Ord a) => Tree a -> a -> Tree a -> Tree a
-reduce2 (Leaf l1) v (Leaf l2)         = Node (Bi (Leaf l1) v (Leaf l2))
-reduce2 (Node n1) v (Node n2)         = Node (Bi (Node n1) v (Node n2))
-reduce2 (Promote (Bi t1 v1 t2)) v2 t3 = Node (Tri t1 v1 t2 v2 t3)
-reduce2 t1 v1 (Promote (Bi t2 v2 t3)) = Node (Tri t1 v1 t2 v2 t3)
-
+reduce2 (Leaf l1) v (Leaf l2)               = Node (Bi (Leaf l1) v (Leaf l2))
+reduce2 (Node n1) v (Node n2)               = Node (Bi (Node n1) v (Node n2))
+reduce2 (Promote (Bi t1 v1 t2)) v2 t3       = Node (Tri t1 v1 t2 v2 t3)
+reduce2 t1 v1 (Promote (Bi t2 v2 t3))       = Node (Tri t1 v1 t2 v2 t3)
 
 -- should not be called with three 1-leaves, or a tri-node and any leaves
 reduce3 :: (Ord a) => Tree a -> a -> Tree a -> a -> Tree a -> Tree a
@@ -47,7 +51,6 @@ reduce3 (Node n1) v1 (Node n2) v2 (Node n3) = Node (Tri (Node n1) v1 (Node n2) v
 reduce3 t1 v1 t2 v2 (Promote (Bi t3 v3 t4)) = Promote (Bi (Node (Bi t1 v1 t2)) v2 (Node (Bi t3 v3 t4)))
 reduce3 t1 v1 (Promote (Bi t2 v2 t3)) v3 t4 = Promote (Bi (Node (Bi t1 v1 t2)) v2 (Node (Bi t3 v3 t4)))
 reduce3 (Promote (Bi t1 v1 t2)) v2 t3 v3 t4 = Promote (Bi (Node (Bi t1 v1 t2)) v2 (Node (Bi t3 v3 t4)))
-
 
 insert :: (Ord a) => Tree a -> a -> Tree a
 insert t x = reduce (ins t x)
