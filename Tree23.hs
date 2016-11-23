@@ -5,8 +5,6 @@ module Tree23 (
   mkTree
 ) where
 
-import qualified Data.List
-
 data Leaf a = One a | Two a a
   deriving (Eq)
 data Node a = Bi (Tree a) a (Tree a) | Tri (Tree a) a (Tree a) a (Tree a)
